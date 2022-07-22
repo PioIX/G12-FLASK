@@ -10,102 +10,122 @@ CORS(app)
 # NO MODIFICAR
 app.secret_key = 'esto-es-una-clave-muy-secreta'
 
-
 # SECCIÓN INICIO DE SESION
+
 
 @app.route('/')
 def index():
-  return render_template('index.html')
+    return render_template('index.html')
+
 
 @app.route('/iniciarsesion')
 def iniciarSesion():
-  return render_template('inicio_sesion.html')
+    return render_template('inicio_sesion.html')
+
 
 #https://lineadecodigo.com/python/sesion-en-flask/
 #https://www.geeksforgeeks.org/how-to-use-flask-session-in-python-flask/
 @app.route('/crearusuario')
 def crear():
-  return render_template("crear_usuario.html")
-  
+    return render_template("crear_usuario.html")
+
+
 @app.route('/ingresarusuario', methods=['POST', 'GET'])
 def crearUsuario():
     msg = None
     if (request.method == "POST"):
-        if (request.form["usuario"] != "" and request.form["contraseña"] != "" and request.form["confirmación"]):
-          if request.form["contraseña"] == request.form["confirmación"]:
-            usuario = request.form['usuario']
-            contraseña = request.form['contraseña']
-            session['usuario'] = usuario
-            session['contraseña'] = contraseña
-            existe = checkearSiEsta(usuario)
-            if existe == True:
-              msg= "Su usario ya existe. Por favor intentelo nuevamente"
-              return render_template("crear_usuario.html", msg=msg)
+        if (request.form["usuario"] != "" and request.form["contraseña"] != ""
+                and request.form["confirmación"] != ""):
+            if request.form["contraseña"] == request.form["confirmación"]:
+                usuario = request.form['usuario']
+                contraseña = request.form['contraseña']
+                session['usuario'] = usuario
+                session['contraseña'] = contraseña
+                existe = checkearSiEsta(usuario)
+                if existe == True:
+                    msg = "Su usario ya existe. Por favor intentelo nuevamente"
+                    return render_template("crear_usuario.html", msg=msg)
+                else:
+                    msg = f"Bienvenidx {usuario}"
+                    insertUser(usuario, contraseña)
+                    logearte()
+                    return render_template("juego.html", msg=msg)
             else:
-              msg = f"Bienvenidx {usuario}"
-              insertUser(usuario, contraseña)
-              return render_template("juego.html", msg=msg)
-          else:
-            msg = "Tu contraseña no ha sido confirmada. Intentalo nuevamente"
-            return render_template("crear_usuario.html", msg=msg)
+                msg = "Tu contraseña no ha sido confirmada. Intentalo nuevamente"
+                return render_template("crear_usuario.html", msg=msg)
         else:
             msg = "Debe ingresar usuario, contraseña y confirmacion. Intentelo nuevamente"
             return render_template("crear_usuario.html", msg=msg)
 
+
+#Checkea que el usuario no exista
 def checkearSiEsta(unUsuario):
-  conn = sqlite3.connect('dataBase.db')
-  cur = conn.cursor()
-  cur.execute(f"""SELECT *
+    conn = sqlite3.connect('dataBase.db')
+    cur = conn.cursor()
+    cur.execute(f"""SELECT *
                       FROM Usuarios
                       WHERE nombre = '{unUsuario}';
                   """)
-  user = cur.fetchall()
-  conn.commit()
-  conn.close()
-  if user != []:
-    return True
-  
+    user = cur.fetchall()
+    conn.commit()
+    conn.close()
+    if user != []:
+        return True
 
 
-@app.route('/login',methods=['GET','POST'])
+#Logearte
+@app.route('/login', methods=['GET', 'POST'])
 def logearte():
-  usuario = request.form["usuario"]
-  contraseña = request.form["contraseña"]
-  conn = sqlite3.connect('dataBase.db')
-  cur = conn.cursor()
-  cur.execute(f"""SELECT *
+    usuario = request.form["usuario"]
+    contraseña = request.form["contraseña"]
+    conn = sqlite3.connect('dataBase.db')
+    cur = conn.cursor()
+    cur.execute(f"""SELECT *
                       FROM Usuarios
                       WHERE nombre = '{usuario}' AND contraseña = '{contraseña}';
                   """)
-  user = cur.fetchall()
-  conn.commit()
-  conn.close()
-  if user != []:
-    session["usuario"] = usuario
-    msg= f"Bienvenidx nuevamente {usuario}"
-    preguntas = listaPreguntasSegunNivel('1')
-    respuestas = listaRespuestas()
-    return render_template('juego.html', msg=msg)
-  else:
-    msg= 'Usuario inexistente. Intentelo nuevamente'
-    return render_template('inicio_sesion.html', msg=msg)
+    user = cur.fetchall()
+    conn.commit()
+    conn.close()
+    if user != []:
+        session["usuario"] = usuario
+        msg = f"Bienvenidx nuevamente {usuario}"
+        preguntas1 = listaPreguntasSegunNivel('1')
+        preguntas2 = [
+            listaPreguntasSegunCategoria('ODS 4'),
+            listaPreguntasSegunCategoria('ODS 10'),
+            listaPreguntasSegunCategoria('ODS 15')
+        ]
+        preguntasBonus = listaPreguntasSegunNivel('bonus')
+        respuestas = listaRespuestas()
+        return render_template('juego.html',
+                               msg=msg,
+                               preguntas1=preguntas1,
+                               preguntas2=preguntas2,
+                               preguntasBonus=preguntasBonus,
+                               respuestas=respuestas)
+    else:
+        msg = 'Usuario inexistente. Intentelo nuevamente'
+        return render_template('inicio_sesion.html', msg=msg)
 
 
-  
 # Ingresar usuario a base de datos
 def insertUser(unUsuario, unaContraseña):
-  con = sqlite3.connect("dataBase.db")
-  con.execute("INSERT INTO Usuarios (nombre,contraseña) VALUES (?,?)",(unUsuario, unaContraseña))
-  con.commit()
-  con.close()
-  return render_template("crear_usuario.html")
-  
+    con = sqlite3.connect("dataBase.db")
+    q = f"""INSERT INTO Usuarios (nombre,contraseña) VALUES ('{unUsuario}', '{unaContraseña}')"""
+    con.execute(q)
+    con.commit()
+    con.close()
+    return render_template("juego.html")
+
+
 # ------------------------------------------------------
 
 # SECCION BASE DE DATOS/API
-  
+
+
 ## Lista todas las preguntas
-@app.route('/listaPreguntas')
+# @app.route('/listaPreguntas')
 def listaPreguntas():
     conn = sqlite3.connect('dataBase.db')
     conn.row_factory = sqlite3.Row
@@ -123,7 +143,7 @@ def listaPreguntas():
             "nivel": fila[3]
         }
         preguntas.append(pregunta)
-    return jsonify(preguntas)
+    return preguntas
 
 
 ## Lista todas las preguntas
@@ -150,7 +170,7 @@ def listaUsuarios():
 
 
 # Lista las preguntas según Nivel
-# @app.route('/listaPreguntas/nivel/<nivel>')
+@app.route('/listaPreguntas/nivel/<nivel>')
 def listaPreguntasSegunNivel(nivel):
     conn = sqlite3.connect('dataBase.db')
     conn.row_factory = sqlite3.Row
@@ -176,11 +196,12 @@ def listaPreguntasSegunNivel(nivel):
         if preguntas[numero_random] not in preguntas_random:
             preguntas_random.append(preguntas[numero_random])
 
+
     return preguntas_random
 
 
     # Lista las preguntas según Nivel
-@app.route('/listaPreguntas/categoria/<categ>')
+# @app.route('/listaPreguntas/categoria/<categ>')
 def listaPreguntasSegunCategoria(categ):
     conn = sqlite3.connect('dataBase.db')
     conn.row_factory = sqlite3.Row
@@ -206,7 +227,7 @@ def listaPreguntasSegunCategoria(categ):
         if preguntas[numero_random] not in preguntas_random:
             preguntas_random.append(preguntas[numero_random])
 
-    return jsonify(preguntas_random)
+    return preguntas_random
 
 
 ## Devuelve la lista de los niveles
@@ -268,8 +289,8 @@ def listaNiveles():
 #Editar preguntas/respuestas o Borrar Pregunta
 @app.route('/editar/<id>', methods=['POST', 'GET'])
 def editaPregunta(id):
-  db.editar(id)
-  return render_template()#pantalla de preguntas
+    db.editar(id)
+    return render_template()  #pantalla de preguntas
 
 
 # Crea una pregunta con sus respuestas
@@ -277,10 +298,36 @@ def editaPregunta(id):
 def crearPregunta(tipo):
     db.crear(tipo)
     return render_template()
+
+
+# SECCION ADMIN
+
+@app.route('/admin/agregar')
+def adminAgregar():
+  return render_template('adminAgregar.html')
+
+
+
+@app.route('/admin/editar')
+def adminEditar():
+  # preguntasAgenda = listaPreguntasSegunCategoria('Agenda 2030')
+  # preguntasODS4 = listaPreguntasSegunCategoria('ODS 4')
+  # preguntasODS10 = listaPreguntasSegunCategoria('ODS 10')
+  # preguntasODS15 = listaPreguntasSegunCategoria('ODS 15')
+  # preguntasEstadistica = listaPreguntasSegunCategoria('Estadísticas')
+
+    preguntas = listaPreguntas()
+    respuestas = listaRespuestas()
+
+  
+    return render_template('adminEditar.html',
+                          preguntas = preguntas,
+                          respuestas = respuestas)
+
 ##################################################################################
-# Comentario de Feli: 
+# Comentario de Feli:
 #(igual esto ya lo deben saber por que ya les anda en pythonanywhere)
-# para correrlo en pythonanywhere hay que agregar : 
+# para correrlo en pythonanywhere hay que agregar :
 # if __name__ == '__main__':
 #    db.create_all()
 #    app.run()
