@@ -18,6 +18,7 @@ body{
 
 /*------------------------------------------------*/
 
+
 /* ----------------------- CAJAS BASE ------------------------------*/
 
 body,html{
@@ -25,33 +26,43 @@ body,html{
     margin: 0 !important;
 }
 
+#container-principal{
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+}
+
 #base{
     min-height: 640px !important; 
-    background-color: #ece6c2;
-    position: absolute;  
+    margin: auto;
+    overflow: auto;
+    height: 100%; 
 }
-
-#aspect-ratio{
-    min-height: 640px !important;
-    height: 100%;
-    position:relative;
-}
-
 
 #container{
-    top: 5%; right:2.5%; left:2.5%; bottom:5%; 
-    position: absolute;
-    width: 95%;
-    height: auto;
+    width: auto;
+    height: 90%;
+    aspect-ratio: 16/9;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    margin-top: 2.5%;
     
 }
 
 #main{
     width: 80%;
     height: 100%;
-    background: url(../static/imagenes/fondos/Pasto.png) center bottom repeat-x,
-                url(../static/imagenes/fondos/Arboles.png) center 90% repeat-x,
-                url(../static/imagenes/fondos/Cielo.png) center top repeat-x;
+    background: url(../../static/imagenes/fondos/Pasto.png) center bottom repeat-x,
+                url(../../static/imagenes/fondos/Arboles.png) center 90% repeat-x,
+                url(../../static/imagenes/fondos/Cielo.png) center top repeat-x;
     background-size: 40%, 80%, 55%;
     float:left;
     position: relative;
@@ -63,21 +74,52 @@ body,html{
     background-color: #23352A;
     float: right;
     position: relative;
-    background: url(../static/imagenes/fondos/mapa.png) center bottom no-repeat;
+    background: url(../../static/imagenes/fondos/mapa.png) center bottom no-repeat;
     background-size:cover;
     border-left: #ece6c2 7px solid;
 }
 
-#informacion{
+#container-info{
     width: 80%;
     height: 85%;
     top: 4%; right: 3.2%;
     background-color:#edede0;
     float:right;
-    padding-left: 32px !important; /* el scrollbar agrega 12px y parece que no esta centrado, correccion */
     z-index: 1;
     position: absolute;
-    overflow-y: scroll;   
+    overflow: overlay;
+}
+
+#info{
+    display: block;
+    height: 90%;
+    width: 100%;
+    right: 0;
+    top: 0;
+    overflow: auto;
+    z-index: 1;
+    position: absolute;
+    background-color:#edede0;
+    float:right;
+}
+
+#botonera{
+    background-color:#edede0;
+    z-index: 2;
+    height:10%;
+}
+
+.botones-menu{
+    height: 70%;
+    margin-top: 15%;
+}
+
+#globo-dialogo1{
+    background: url(../../static/imagenes/fondos/dialogo.png) center bottom no-repeat;
+}
+
+.rana{
+    font-family: 'Itim', cursive;
 }
 
 /* --------------------------------------------------------------------------------------------- */
@@ -111,8 +153,16 @@ body,html{
     border:none !important;
 }
 
-.bi-arrow-right-circle{
-    left:60%;
+#puntaje{
+    height: 7%;
+    background-color: #9CAC2D;
+    bottom: 2.5%; right: 18%;
+    z-index: 3;
+    object-fit: cover;
+    position: absolute;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
 }
 
 /* ----------------------------------------------------------------------------------------------- */
@@ -148,6 +198,8 @@ body,html{
     color: #ece6c2;
 }
 
+
+
 /* ---------------------------------------------------------------------------------------------- */
 
 
@@ -161,17 +213,21 @@ body,html{
     background-color:#23352A;
     top: 6% ; right: 20%; left: 20%;
     position: absolute;
+    color:#ffff
 }
 
 #ranking{
     width: 60%;
     height: 50%;
-    background-color:#ece6c2;
+    background-color:#ffffff;
     top: 28% ; right: 20%; left: 20%;
     position: absolute;
 }
 
 .boton{
+    display:flex;
+    justify-content: center;
+    text-align: center;
     width: 16%;
     height: 8%;
     background-color:#23352A !important;
@@ -180,4 +236,23 @@ body,html{
     top: 82%;
     z-index: 5;
     display: inline-block;
+}
+
+#bg{
+    width: 80%;
+    height: 100%;
+    background: url(../../static/imagenes/fondos/Pasto.png) center bottom repeat-x,
+                url(../../static/imagenes/fondos/Arboles.png) center 90% repeat-x,
+                url(../../static/imagenes/fondos/Cielo.png) center top repeat-x;
+  
+  display: flex;
+  justify-content: center;
+  background-size: 40%, 80%, 55%;
+  float:left;
+  position: absolute;
+  bottom:0%;
+  left: 0%;
+  right: 0%;
+  top:0%;
+  margin: auto;
 }

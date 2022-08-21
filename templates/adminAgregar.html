@@ -20,7 +20,7 @@
                                 <a class="nav-link active fs-5 ms-3" href={{ url_for('adminEditar') }}>Editar Datos</a> 
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link active fs-5 ms-3 me-0" href={{ url_for('adminAgregar') }}>Agregar Datos</a>
+                                <a class="nav-link active fs-5 ms-3 me-0" href= {{ url_for('adminAgregar') }}> Agregar Datos</a>
                             </li>
                         </ul>
                     </div>
@@ -34,12 +34,12 @@
                 <p class="fs-6 p-0 m-0 text-light">Mediante el siguiente form se agregan preguntas a la base de datos. Completar todos los datos indicados. La cantidad de respuestas se determina en base al tipo de pregunta.</p>
             </div>
 
-            <form class="needs-validation" novalidate>
+            <form method="POST" action="/crear" class="needs-validation" novalidate>
 
                 <div class="col-12 rounded-3 p-3 mb-3 bg-white rounded shadow-sm" id="pregunta">
                     
                     <label for="formGroupExampleInput" class="form-label mb-0">Pregunta</label>
-                    <input type="text" class="form-control mt-0 mb-2" placeholder="Ingrese la pregunta que quiere agregar" id="textoPregunta" required>
+                    <input type="text" class="form-control mt-0 mb-2" placeholder="Ingrese la pregunta que quiere agregar" id="textoPregunta" name="textoPregunta" required>
                     <div class="row g-3">
                         <div class="col">
                             <label for="nivel" class="form-label mb-0">Nivel</label>
@@ -66,12 +66,12 @@
                     <div class="col-12 mt-3 p-3 rounded-3 text-center" style="background-color:hsla(104, 59%, 43%, 0.5);">
                         <label for="formGroupExampleInput" class="form-label me-4 mb-0">Tipo de pregunta</label>
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input mb-0" type="radio" value="choice" name="tipoPregunta" onchange="cantidadRespuestas()">
+                            <input class="form-check-input mb-0" type="radio" value="choice" id="tipoPreguntaChoice" name="tipoPregunta"onchange="cantidadRespuestas()">
                             <label class="form-check-label mb-0" for="choice">Multiple choice (3 respuestas)</label>
                         </div>
                         
                         <div class="form-check form-check-inline">
-                            <input class="form-check-input mb-0" type="radio" value="vof" name="tipoPregunta" onchange="cantidadRespuestas()">
+                            <input class="form-check-input mb-0" type="radio" value="vof" id="tipoPreguntaVoF" name="tipoPregunta"onchange="cantidadRespuestas()">
                             <label class="form-check-label mb-0" for="vof">Verdadero o falso (2 respuestas)</label>
                         </div>
                     </div>
