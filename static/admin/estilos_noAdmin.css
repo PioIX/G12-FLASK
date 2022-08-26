@@ -1,5 +1,6 @@
-body{
-    background-color: #ece6c2;
-    /* background-size:auto 50%, auto 90%; */
-    background-position:50% 80%; 
+header{
+    height:100vh;
+    background: url('../imagenes/fondos/Cielo.png') center bottom repeat-x,
+                #99DDB6;
+    background-size: auto 70%;
 }

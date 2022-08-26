@@ -23,8 +23,9 @@ var dialogo={
            },
   "nivelbonus": `Felicidades por llegar al último nivel. Este es un bonus. Acá tendrás preguntas sobre conciencia social. Habrá estadísticas, gráficos y datos duros.Cada una valdrá 5 puntos. Son difíciles así que, ¡NO TE DESALIENTES!`,
   "finDeJuego":{
-    "intro":`Felicidades, terminaste! Ya podrás librarte de mí...o no, MUAJAJAAHAHSHSHS.<br>Veamos cómo te fue:`,
+    "intro":`Ya podrás librarte de mí...o no, MUAJAJAAHAHSHSHS`,
     "puntajeAlto":`Muy bien aventurero, ya podés retirarte y cruzar mi bosque. No olvides lo que aprendiste acá, y espero que te sirva para aportar tu granito de arena al mundo.`,
-    "puntajeBajo":`Lo siento, tu puntaje fue muy bajo. :( No te comeré (esta vez), pero no podrás atravesar mi bosque. Regrésate por donde viniste, y nunca vuelvas. Bueeeno, podés volver cuando quieras. Ser un sapo mágico es un trabajo muy solitario. Seguí aprendiendo e informándote. Es un tema muy importante. Mirá podés empezar por ACÁ. NO TE RINDAS!!!!!`,
+      
+    "puntajeBajo":`Lo siento, tu puntaje fue muy bajo. :( No te comeré (esta vez), pero no podrás atravesar mi bosque. Regrésate por donde viniste, y nunca vuelvas. Bueeeno, podés volver cuando quieras. Ser un sapo mágico es un trabajo muy solitario. Seguí aprendiendo e informándote. Es un tema muy importante. Mirá podés empezar por <a href="https://www.argentina.gob.ar/politicassociales/ods/institucional/agenda2030" style="color:#9CAC2D" target="_blank">ACÁ</a>. NO TE RINDAS!!!!!`,
                 },
 }

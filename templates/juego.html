@@ -7,7 +7,7 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
-        
+        <title>✨🐸✨</title>
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
@@ -20,7 +20,7 @@
             let respuestas = {{ respuestas|tojson }}
             let usuario = {{ usuario|tojson }}
             let datos = {{ datos|tojson }}
-            //let topUsuario= {{ topUsuario }}
+            let topUsuario= {{ topUsuario|tojson }}
         </script>
 
 
@@ -38,7 +38,7 @@
                         <img id="avatar_maestro" src="../static/imagenes/avatares/guia.png"> <!-- placeholder para la imagen del 'maestro' -->
 
                         <div id="container-info">
-                            <div class="rounded-3 p-4 w-100" id="info" style="display: block;">
+                            <div class="rounded-3 p-4 pb-0 w-100" id="info" style="display: block;">
                                 <!-- Para la teoria -->
                                 <div class="p-0" id="teoria" style="height:100%; display:none">
                                 </div>
@@ -49,7 +49,19 @@
 
                                 <!-- Para los dialogos -->
                                 <div class="p-0 m-0 row g-0" id="dialogo" style="display: block;">
-                                </div>   
+                                </div> 
+
+                                <!-- Para las caratulas -->
+                                <div class="p-0 w-100 h-100" id="ods4" 
+                                    style="display:none; background: url(../static/imagenes/caratulas/ods4.jpg) center; background-size: cover; border-radius: 7px;">
+                                </div>
+                                <div class="p-0 w-100 h-100" id="ods10" 
+                                    style="display:none; background: url(../static/imagenes/caratulas/ods10.jpg) center; background-size: cover; border-radius: 7px;">
+                                </div>
+                                <div class="p-0 w-100 h-100" id="ods15" 
+                                    style="display:none; background: url(../static/imagenes/caratulas/ods15.jpg) center; background-size: cover; border-radius: 7px;">
+                                </div>
+                                
                             </div>
                             
                             <!-- Botones -->
@@ -60,9 +72,11 @@
                                     <img src="../static/imagenes/botones/house-heart.svg" class="botones-menu">
                                 </a> 
 
-                                <a onclick=adminAgregar(usuario) style="color:black;height:90%" class="btn shadow-none m-0 p-0 col-1">
-                                    <img src="../static/imagenes/botones/terminal.svg" class="botones-menu">
-                                </a> 
+                                <button style="color:black;height:90%" class="btn shadow-none m-0 p-0 col-1" id='admin'>
+                                    <a href="{{ url_for('adminAgregar') }}" >
+                                        <img src="../static/imagenes/botones/terminal.svg" class="botones-menu m-0">
+                                    </a>
+                                </button>
     
                                
                                 <div class="my-0 px-5 py-0 col-8 text-end h-100" id="navegacion" style="display:none">
@@ -86,28 +100,68 @@
                 </div>
                 
                 <!-- Pantalla final (final del juego) -->
-                <div class="rounded-3 principal g-0 my-3 text-center col-10 " id="final" style="display: none;" >
-                    <div class="caja rounded-3">
-                        <div id="texto" class= "rounded-3"></div>
-                        <div id="ranking"></div>
-                        <img class="position-absolute bottom-0 end-0 m-5" id="avatar_usuario" src="{{ datos['icon'] }}"> <!-- placeholder para la imagen del avatar -->
-                 
-                        <a id="btnSalir"  class="boton btn btn-success" style="left:64%;" role="button" href="{{url_for('index')}}">Salir </a>
-                        <button id="btnVolver" type="submit" class="boton btn btn-success" style="left:42%;" onclick="url_for('inicioJuego')">Volver a jugar</button>
-                      <button id="btnMostrar" type="submit" class="boton btn btn-success" style="left:20%" onclick="mostrarRanking()">Mostrar Ranking </button>
+                <div class="rounded-3 p-5" id="final" style="display: none;" >
+                    <div class="rounded-3 " id="final_base">
+                        <div id="texto" class="rounded-3 p-3 px-4 d-flex my-auto justify-content-center align-items-center">
+                            <div class="col text-center h-100">
+                                <img src="../static/imagenes/estrellas.png" style="height:100%">
+                            </div>
+                            <div class="col-8 d-flex flex-column">
+                                <p class="fs-1 text-center lh-1 m-0 rana p-0 fw-bold">FELICITACIONES!</p>
+                                <p class="text-center lh-1 m-0 rana p-0" style="font-size:3vh">Ya podrás librarte de mí...o no, MUAJAJAAHAHS</p>
+                            </div>
+                            <div class="col text-center h-100">
+                                <img src="../static/imagenes/estrellas.png" style="height:100%">
+                            </div>
+                        </div>
+
+                        <div id="ranking" class="rounded-3 p-3 d-flex flex-column my-auto justify-content-center rana">
+                        </div>
+
+                        <img id="usuario_final" src="{{ datos['icon'] }}"> 
+                        
+                        <div class="col-12 row g-0 d-flex justify-content-around" id="linea_botones">
+                            <a id="btnSalir" class="btn btn-success col-4 rana" class="text-light text-decoration-none" href="{{url_for('index')}}" role="button" type="button">
+                                <button style="background: none; color:white; border:none ; height:100%;">Salir</button>
+                            </a>
+                            <a id="btnJugar" class="btn btn-success col-4 rana" href="{{ url_for('juegoNuevo') }}" class="text-light text-decoration-none" role="button" type="button">
+                                <button style="background: none; color:white; border:none ; height:100%;">Volver a Jugar</button>
+                            </a>
+                            <button id="btnMostrar" class="btn btn-success col-3 rana" onclick="mostrarRanking()">Mostrar Ranking </button>
+                        </div>
+                        
                     </div>
                 </div>
                 
-            </div>
+
+                <iframe name="dummyframe" id="dummyframe" style="display: none;"></iframe>
+
+                <!-- RANKING -->
+                <div class="modal fade" id="alert" tabindex="-1" aria-labelledby="alert" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-lg">
+                        <div class="modal-content" style="border-radius:8px;">
+                            <div class="modal-body d-flex flex-column align-items-center" 
+                                style="background:url(../static/imagenes/fondos/Cielo.png) repeat-x bottom, #99DDB6; background-size:70%; border-radius:8px">
+                                <div class="d-flex">
+                                    <h5 class="modal-title rana" id="exampleModalLabel" style="font-size:4vh;">TOP 10 JUGADORES</h5>
+                                    <button type="button" class="btn-close position-absolute position-absolute top-0 end-0 m-3" data-bs-dismiss="modal" aria-label="Close" onclick="$('.modal').modal('hide')"></button>
+                                </div>
+                                <div id="alertBody" class="h-100 w-100 d-flex flex-column align-items-center"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 
             </div>
+                
+                
+        </div>
         
 
         <!-- --------- AVISO CORRECTO / INCORRECTO ---------- -->
         <div class="toast-container position-absolute top-0 start-0 p-3" style="z-index: 1;" id="alerts">
-
-             
+            
         </div>
         
         <script src="static/juego/dialogo.js"></script>

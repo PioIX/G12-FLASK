@@ -28,6 +28,8 @@ let divTeoria = document.getElementById('teoria');
 let divBotones = document.getElementById('navegacion');
 let divPuntaje = document.getElementById('puntaje');
 let divAlerts = document.getElementById('alerts');
+let divFinal = document.getElementById('final');
+let divJuego = document.getElementById('container');
 
 let puntajeGeneral = 0;
 let puntajeBonus = 0;
@@ -46,7 +48,7 @@ async function mostrarCuestionario(){
 
     let arrayRespuestas = filtrarRespuestas(arrayPreguntas);
 
-    let puntos = indexNivel == 0 ? 3 : indexNivel == 4 ? 5 : 4;
+    let puntos = indexNivel == 0 ? 3 : indexNivel == 5 ? 5 : 4;
 
     esconder(divTeoria)
     mostrar(divForm)
@@ -80,12 +82,12 @@ async function mostrarCuestionario(){
         
         let rtaSeleccionada = (Array.from(document.getElementsByName('respuesta'))).filter(i => i.checked)[0].dataset.id;
         let correcto = filtrarPorRtaCorrecta(arrayRespuestas[i]);
-        
+
         if(correcto == rtaSeleccionada){
             divAlerts.innerHTML = `
             <div id="alert-rta${i}" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header text-light" style="background-color:#328C38">
-                    <img src="../static/imagenes/correcto.png" class="rounded me-2" alt="..." style="height:30px;">
+                    <img src="../static/imagenes/alerts/correcto.png" class="rounded me-2" alt="..." style="height:30px;">
                     <strong class="me-auto">Bien ahi!!</strong>
                 </div>
                 <div class="toast-body">
@@ -94,14 +96,18 @@ async function mostrarCuestionario(){
             </div>`
             
             let msj = new bootstrap.Toast(document.getElementById(`alert-rta${i}`))
-            puntajeGeneral += puntos
+            if(indexNivel == 5){
+                puntajeBonus += puntos
+            }else{
+                puntajeGeneral += puntos 
+            }
             divPuntaje.innerHTML = `✦ Tu puntaje: ${puntajeGeneral} ✦`
             msj.show()
         }else{
             divAlerts.innerHTML = `
             <div id="alert-rta${i}" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
                 <div class="toast-header text-light" style="background-color:#C93636">
-                    <img src="../static/imagenes/incorrecto.png" class="rounded me-2" alt="..." style="height:30px;">
+                    <img src="../static/imagenes/alerts/incorrecto.png" class="rounded me-2" alt="..." style="height:30px;">
                     <strong class="me-auto">Nooo :(</strong>
                 </div>
                 <div class="toast-body">
@@ -116,20 +122,25 @@ async function mostrarCuestionario(){
 
     switch (indexNivel){
         case 1:
-            nivelODS4();
+            nivelTerminado()
+            nivelODS4A();
             break;
         case 2:
+            nivelTerminado()
             nivelODS10();
             break;
         case 3:
+            nivelTerminado()
             nivelODS15();
             break;
         case 4:
-            nivelBonus();
+            nivelTerminado()
+            nivelBonusA();
             indexNivel++
             break;
         case 5:
             mostrarFinal();
+            puntajeGeneral += puntajeBonus
             break;
     }
 
@@ -144,6 +155,17 @@ function formEnviado() {
                 botonEnviar.removeEventListener('click', recibirEnvio);
                 acc();
             }else{
+                divAlerts.innerHTML = `
+<div id="alert-noRta" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true" >
+                <div class="toast-header text-light" style="background-color: #CFA025">
+                    <img src="../static/imagenes/alerts/noRta.png" class="rounded me-2" alt="..." style="height:30px;">
+                    <strong class="me-auto">OJOOO</strong>
+                </div>
+                <div class="toast-body">
+                    No seleccionaste ninguna respuesta! Elegi una y volvé a chequear la respuesta
+                </div>
+            </div>
+                `
                 let msj = new bootstrap.Toast(document.getElementById('alert-noRta'))
                 msj.show()
             }
@@ -154,6 +176,7 @@ function formEnviado() {
 }
 
 function mostrarTeoria(){
+    
     let array = teoria[indexNivel].slice(indexPag, indexPag+2);
     let txt = "";
 
@@ -167,7 +190,7 @@ function mostrarTeoria(){
     
     divTeoria.innerHTML = txt;
     
-}        
+}
 
 function dialogoGuia(textoDialogo) {
     let texto = `
@@ -204,6 +227,11 @@ function mostrar(div){
 }
 function esconder(div){
     div.style.display = 'none'
+}
+function nivelTerminado(){
+    document.getElementById('mapa').innerHTML += `
+    <img id="marcador${indexNivel}" src="../static/imagenes/marcador.png" class="terminado">
+    `
 }
 
 function scrollAbajo(){
@@ -251,183 +279,233 @@ function introduccion() {
     let dialogo1 = `${dialogo.inicio.hola[0]} <b><i>${datos.nombre}</i></b> ${dialogo.inicio.hola[1]}`;
     let dialogo2 = `${dialogo.inicio.intro}`;
     let dialogo3 = `${dialogo.inicio.instrucciones}`
-    let dialogo4 = `<button class="rana btn btn-success col-12 fs-4" id="botonComenzar" onclick="nivelAgenda()">¡Estoy preparadx!</button>`
+    let dialogo4 = `<button class="rana btn btn-success col-12 fs-4" id="botonComenzar" onclick="nivelAgendaA()">¡Estoy preparadx!</button>`
     // ---------------------------------
 
     // ---------- SECUENCIA DE FUNCIONES
     /*1*/dialogoGuia(dialogo1);
-    /*2*/setTimeout(function() {dialogoGuia(dialogo2)}, 1000);        
+    /*2*/setTimeout(function() {dialogoGuia(dialogo2)}, 1000);
     /*3*/setTimeout(function() {dialogoGuia(dialogo3)}, 2000);
     /*4*/setTimeout(function() {scrollAbajo()},2000);
     /*5*/setTimeout(function() {dialogoUser(dialogo4)}, 3000);
-    /*6*/setTimeout(function() {scrollAbajo()},3000);
+    /*6A*/setTimeout(function() {scrollAbajo()},3000);
     // ---------------------------------
 
 }
 
-function nivelAgenda(){    
+function nivelAgendaA(){    
     // ------- DECLARACION DE VARIABLES
     let dialogo5 = `${dialogo.inicio.comenzar}`;
     let dialogo6 = `${dialogo.nivel1.inicio}`;
+    let dialogo7 = `<button class="rana btn btn-success col-12 fs-4" id="botonComenzar" onclick="nivelAgendaB()">Entiendo! Empecemos</button>`
     // ---------------------------------
     
-    // ---------- SECUENCIA DE FUNCIONES    
-    /*7*/dialogoGuia(dialogo5);
-    /*8*/scrollAbajo();
-    /*9*/setTimeout(function() {divDialogo.innerHTML = ""},2000);
-    /*10*/setTimeout(function() {dialogoGuia(dialogo6)}, 2000);
-    /*11*/setTimeout(function() {
-            esconder(divDialogo);
-            mostrar(divTeoria);
-            divBotones.style.display = 'block';
-            botonAnt.disabled = true;
-            mostrarTeoria()
-    }, 8000);
+    // ---------- SECUENCIA DE FUNCIONES
+    /*7*/document.getElementById('botonComenzar').disabled = true;
+    /*8*/dialogoGuia(dialogo5);
+    /*9*/scrollAbajo();
+    /*10*/setTimeout(function() {divDialogo.innerHTML = ""},2000);
+    /*11*/setTimeout(function() {dialogoGuia(dialogo6)}, 2000);
+    /*12*/setTimeout(function() {dialogoUser(dialogo7)}, 4000);
+    
     // ---------------------------------
 }
 
-function nivelODS4(){
+function nivelAgendaB(){
+    // ---------- SECUENCIA DE FUNCIONES  
+    /*13*/document.getElementById('botonComenzar').disabled = true;
+    /*14*/esconder(divDialogo);
+    /*15*/mostrar(divTeoria);
+    /*16*/divBotones.style.display = 'block';
+    /*17*/botonAnt.disabled = true;
+    /*18*/mostrarTeoria()
+    // ---------------------------------
+}
+
+function nivelODS4A(){
     // ------- DECLARACION DE VARIABLES
-    let dialogo7 = `${dialogo.nivel1.final}`
-    let dialogo8 = `${dialogo.nivel2.inicio}`
+    let dialogo8 = `${dialogo.nivel1.final}`;
+    let dialogo9 = `${dialogo.nivel2.inicio}`;
+    let dialogo10 = `<button class="rana btn btn-success col-12 fs-4" id="botonComenzar" onclick="nivelODS4B()">Cuantos ODS! Vamos allá</button>`
     // ---------------------------------    
 
     // ---------- SECUENCIA DE FUNCIONES    
-    /*14*/esconder(divTeoria)
-    /*15*/esconder(divForm)
-    /*16*/divDialogo.innerHTML = "";
-    /*17*/mostrar(divDialogo);
-    /*18*/dialogoGuia(dialogo7);
-    /*19*/setTimeout(function() {dialogoGuia(dialogo8);}, 2000);
-    /*20*/setTimeout(function() {
-        esconder(divDialogo);
-        mostrar(divTeoria);
-        botonSig.disabled = false;
-        mostrarTeoria();
-    }, 7000);
+    /*19*/esconder(divTeoria)
+    /*20*/esconder(divForm)
+    /*21*/divDialogo.innerHTML = "";
+    /*22*/mostrar(divDialogo);
+    /*23*/dialogoGuia(dialogo8);
+    /*24*/setTimeout(function() {dialogoGuia(dialogo9);}, 2000);
+    /*25*/setTimeout(function() {dialogoUser(dialogo10);}, 6000);
     // ---------------------------------
     
 }    
 
+function nivelODS4B(){    
+    
+    let caratula = document.getElementById('ods4');
+    // ---------- SECUENCIA DE FUNCIONES
+    /*26*/document.getElementById('botonComenzar').disabled = true;
+    /*27*/esconder(divDialogo);
+    /*28*/mostrar(caratula);
+    /*29*/setTimeout(function(){
+            esconder(caratula)
+            mostrar(divTeoria)
+            botonSig.disabled = false;
+            mostrarTeoria();},4000)
+    // ---------------------------------
+}
+
+
 function nivelODS10() {
+    // ------- DECLARACION DE VARIABLES    
+    let caratula = document.getElementById('ods10');
+    // ---------------------------------    
+    
     // ---------- SECUENCIA DE FUNCIONES    
-    /*23*/esconder(divForm);
-    /*24*/mostrar(divTeoria);
-    botonSig.disabled = false;
-    /*25*/mostrarTeoria();
+    /*19*/esconder(divForm);
+    /*20*/mostrar(caratula);
+    /*21*/setTimeout(function(){
+        esconder(caratula);
+        mostrar(divTeoria);
+        botonSig.disabled = false;
+        mostrarTeoria();},4000) 
     // ---------------------------------
 }
 
 function nivelODS15(){
+    // ------- DECLARACION DE VARIABLES
+    let caratula = document.getElementById('ods15');
+    // ---------------------------------    
+    
     // ---------- SECUENCIA DE FUNCIONES    
-    /*26*/esconder(divForm);
-    /*27*/mostrar(divTeoria);
-    botonSig.disabled = false;
-    /*28*/mostrarTeoria();
+    /*22*/esconder(divForm);
+    /*23*/mostrar(caratula);
+    /*24*/setTimeout(function(){
+        esconder(caratula);
+        mostrar(divTeoria);
+        botonSig.disabled = false;
+        mostrarTeoria();},4000) 
     // ---------------------------------
 }
 
-function nivelBonus(){
+function nivelBonusA(){
     // ------- DECLARACION DE VARIABLES
-    let dialogo9 = `${dialogo.nivel2.final}`
-    let dialogo10 = `${dialogo.nivelbonus}`
+    let dialogo11 = `${dialogo.nivel2.final}`
+    let dialogo12 = `${dialogo.nivelbonus}`
+    let dialogo13 = `<button class="rana btn btn-success col-12 fs-4" id="botonComenzar" onclick="nivelBonusB()">Ya estoy cerca de salir del bosque! A ver tus preguntas</button>`
     // ---------------------------------    
 
     // ---------- SECUENCIA DE FUNCIONES    
-    /*14*/esconder(divForm);
-    /*15*/esconder(divTeoria);
-    /*16*/divDialogo.innerHTML = "";
-    /*17*/mostrar(divDialogo);
-    /*18*/dialogoGuia(dialogo9);
-    /*19*/setTimeout(function() {dialogoGuia(dialogo10);}, 2000);
-    /*20*/setTimeout(function() {
-        esconder(divDialogo);
-        mostrar(divForm);
-        mostrarCuestionario()
-    }, 7000);
+    /*25*/esconder(divForm);
+    /*26*/esconder(divTeoria);
+    /*27*/divDialogo.innerHTML = "";
+    /*28*/mostrar(divDialogo);
+    /*29*/dialogoGuia(dialogo11);
+    /*30*/setTimeout(function() {dialogoGuia(dialogo12);}, 2000);
+    /*31*/setTimeout(function() {dialogoUser(dialogo13);}, 5000);
+    
 
     // ---------------------------------
 }
 
-function mostrarFinal(puntaje,puntajeBonus){
+function nivelBonusB(){
+    /*26*/document.getElementById('botonComenzar').disabled = true;
+    esconder(divDialogo);
+    mostrar(divForm);
+    mostrarCuestionario()
+ 
+}
+
+function mostrarFinal(){
   //------DECLARACION DE VARIABLES----------------------
-  let divFinal=document.getElementById('final');
-  let divDialogo = document.getElementById('dialogo');
-  let divInfo=document.getElementById('info');
-  let divMain=document.getElementById('main');
-  let divMapa=document.getElementById('mapa');
-  let divBg=document.getElementById('bg');
-  let puntajeFinal= puntaje+puntajeBonus;
-  let cierre= "";
-  let ranking="";
-  let despedida="";
-  let dialogoCierre=`${dialogo.finDeJuego.intro}`;
-  let dialogoAlto=`${dialogo.finDeJuego.puntajeAlto}`;
-  let dialogoBajo=`${dialogo.finDeJuego.puntajeBajo}`;
-  // ----------------------------------------------------
-  divFinal.style.display = 'block';
-  divBg.style.display = 'block';
-  divDialogo.style.display= 'none';
-  divInfo.style.display= 'none';
-  divMain.style.display= 'none';
-  divMapa.style.display= 'none';
-  cierre+=`<h3 id="cierre" class="p-2 text-start fs-4 lh-base mt-auto mb-0 text-center text-wrap">${dialogoCierre}</h3>`
-  
-  ranking+=`<p id="puntaje" class="p-2 text-start fs-4 lh-base mt-auto mb-0 text-center"> Este fue tu puntaje: ${puntaje}</p>
-  <p id="puntajeBonus" class="p-2 text-start fs-4 lh-base mt-auto mb-0 text-center"> Este fue tu puntaje bonus: ${puntajeBonus}</p>
-            
-            <p id="puntajeFinal" class="p-2 text-start fs-4 lh-base mt-auto mb-0 text-center"> Este fue tu puntaje final: ${puntajeFinal}</p>
-            `
-  if(puntajeFinal>=37){
-    despedida+=`<p id="cierre" class=" rounded-2 p-2 text-start fs-5 lh-base mt-auto mb-0 text-center font-weight-bold" style=" background-color: #4FAD2D; color: #ffff;">${dialogo.finDeJuego.puntajeAlto}</p>`
-  }else{
-    despedida+=`<p id="cierre" class="p-2 text-start fs-6 lh-base mt-auto mb-0 text-center font-weight-bold" style="background-color: #DEBE63;color: #ffff">${dialogo.finDeJuego.puntajeBajo}`
-  };
-  document.getElementById('texto').innerHTML += cierre;
-  document.getElementById('ranking').innerHTML += ranking;
-  document.getElementById('ranking').innerHTML += despedida;
+    let divTexto = document.getElementById('texto');
+    let divRanking = document.getElementById('ranking');
+
+    let puntajeFinal = puntajeGeneral + puntajeBonus;
+    
+    let dialogoAlto =`${dialogo.finDeJuego.puntajeAlto}`;
+    let dialogoBajo =`${dialogo.finDeJuego.puntajeBajo}`;
+    
+    let ranking =`
+        <form method="POST" id="formPuntos" name="formPuntos" action="/ingresarPuntaje" target="dummyframe" class="rounded-3 d-flex flex-column justify-content-evenly rana mb-3">
+            <div class="row justify-content-center">
+                <div class="col-3 divPuntaje rounded-3 py-3 me-2">
+                    <p class="p-0 fs-4 lh-1 rana text-center mb-0"> ✦Tu puntaje✦ </p>
+                    <input class="p-0 fs-2 lh-1 inputPuntos" type="number" name="puntajeGeneral" value="${puntajeGeneral}" readonly>
+                </div>
+                <div class="col-4 divPuntaje rounded-3 py-3 p-0 me-2 ">
+                    <p class="p-0 fs-4 lh-1 rana text-center mb-0"> ✦Puntaje Bonus✦</p>
+                    <input class="p-0 fs-2 lh-1 inputPuntos" type="number" name="puntajeBonus" value="${puntajeBonus}" readonly>
+                </div>
+                <div class="col-4 divPuntaje rounded-3 py-3 ">
+                    <p class="p-0 fs-4 lh-1 rana text-center mb-0"> ✦¡Puntaje Final!✦ </p>
+                    <input class="p-0 fs-2 lh-1 inputPuntos" type ="number" name="puntajeFinal" value="${puntajeFinal}" readonly>
+                </div>
+            </div>
+        </form>`;
+    
+    let despedida = (puntajeFinal>=37) ? 
+        `<p class="rounded-3 p-2 px-4 mb-0 text-start lh-base text-center" style="color: #ffff; font-size: 3vh;">
+        ${dialogo.finDeJuego.puntajeAlto}</p>` :
+        `<p class="rounded-3 p-2 px-4 mb-0 text-start lh-base text-center" style="color: #ffff; font-size: 3vh;">
+        ${dialogo.finDeJuego.puntajeBajo}</p>`;
+    // ----------------------------------------------------
+    
+    /*32*/esconder(divJuego)
+    /*33*/mostrar(divFinal)
+    /*34*/divRanking.innerHTML += `${ranking} ${despedida}`;
+    /*35*/document.forms['formPuntos'].submit()
+
 };
 function mostrarRanking(){
-  let texto=``;
-  let ranking="";
-  // let tops=topUsuario;
-  let divTexto= document.getElementById('texto');
-  let divRanking=document.getElementById('ranking');
-  let divBotonM=document.getElementById('btnMostrar');
-  let divBotonS=document.getElementById('btnSalir');
-  let divBotonV=document.getElementById('btnVolver');
-  divBotonM.style.display= 'none';
-  divBotonS.style.top="86%";
-  divBotonS.style.left="58%";
-  divBotonV.style.top="86%";
-  divBotonV.style.left="25%";
-  
-  divTexto.style.height="auto";
-  divRanking.style.height="67%";
-  divRanking.style.top="16%";
-  texto+=`<h2 id="top" class="p-2 text-start fs-4 lh-base mt-auto mb-0 text-center">TOP 10 JUGADORES</h2>`
-  for(let i=0 ; i<10 ; i++){
-    ranking+=`<li class="list-group-item list-group-item-warning">{tops}</li>`
-  }
-  document.getElementById('ranking').innerHTML = ranking;
-  document.getElementById('texto').innerHTML = texto;
-}
+    let alertBody=document.getElementById('alertBody');
+    let alert = new bootstrap.Modal(document.getElementById('alert'))
+    $(".modal-backdrop").remove();
 
-function a(){
-    let divFinal=document.getElementById('final');
-    let divPrincipal = document.getElementById('container');
+    let index = topUsuario.findIndex(i => i.nombre == datos.nombre)
+    let nuevoRecord = {'nombre':datos.nombre, 'puntos':puntajeGeneral}
 
-    divPrincipal.style.display = 'none';
-    divFinal.style.display = 'block'
-}
+    if(index !== -1){
+        if(topUsuario[index].puntos < puntajeGeneral){
+            topUsuario.splice(index,1,nuevoRecord)
+        }
+    }else if(puntajeGeneral !== 0){
+        topUsuario.push(nuevoRecord)
+    }
+    
+    
+    topUsuario.sort((a, b) => b.puntos-a.puntos);
 
+    if(alertBody.innerHTML === ""){
+      for(let i=0 ; i<10 ; i++){
+        if(i<topUsuario.length){
+            alertBody.innerHTML += `
+                <li class="list-group-item list-group-item-action d-flex justify-content-around text-center w-75" style="background-color:hsla(0, 0%, 100%,0.8)">
+                    <p class="p-0 m-0 rana" style="font-size:3vh;">${topUsuario[i].nombre}</p>
+                    <p class="p-0 m-0 rana" style="font-size:3vh;">${topUsuario[i].puntos}</p>
+                </li>
+            `
+        }else{
+            alertBody.innerHTML += `
+                <li class="list-group-item list-group-item-action d-flex justify-content-around text-center w-75" style="background-color:hsla(0, 0%, 100%,0.8)">
+                    <p class="p-0 m-0 rana" style="font-size:3vh;">-</p>
+                    <p class="p-0 m-0 rana" style="font-size:3vh;">-</p>
+                </li>
+            `
+        }
+       
+        
+     };
+    
+  };
+      alert.show()
 
-function inicioJuego(){
-  alert('en mantenimiento tenga paciencia')
-}
+};
 
 // ----------------------------------------------------------
 
-
-
-
+window.onload = function(){
+    datos.esAdmin == false && (document.getElementById('admin').disabled = true);
+    introduccion()
+}
