@@ -1,36 +1,55 @@
-<!doctype html>
+ <!doctype html>
 <html lang="en">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="canonical" href="https://getbootstrap.com/docs/5.0/examples/sign-in/">
-
+        <title>Inicia Sesión</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
-        <link href="../static/estilos_inicio_sesion.css" rel="stylesheet">
+        <link href="../static/inicio_user/estilos_inicio_sesion.css" rel="stylesheet">
+        <script>
+            let msg = {{ msg|tojson }}
+        </script>
     </head>
     <body class="text-center p-0">
 
         <main class="form-signin pt-5">
-            <form method="POST" action="/login">
+            <form method="POST" action="/login" class="needs-validation" novalidate>
                 <h1 class="h3 mb-3 mt-2 fw-normal">Por favor, inicia sesión</h1>
 
                 <div class="form-floating">
-                <input name="usuario" type="text" class="form-control" id="usuario" placeholder="nombre">
+                <input name="usuario" type="text" class="form-control" id="usuario" placeholder="nombre" required>
                 <label for="usuario">Nombre de usuario</label>
                 </div>
                 <div class="form-floating">
-                <input name="contraseña" type="password" class="form-control" id="floatingPassword" placeholder="contraseña">
+                <input name="contraseña" type="password" class="form-control" id="floatingPassword" placeholder="contraseña" required>
                 <label for="contraseña">Contraseña</label>
                 </div>
 
-                <button class="w-100 btn btn-lg btn-success mt-2 mb-2" type="submit" style="background-color:#23352A;border: none;">Iniciar sesión {{msg}}</button>
+                <button class="w-100 btn btn-lg btn-success mt-2 mb-2" onclick="validacion()" type="submit" style="background-color:#23352A;border: none;" >Iniciar sesión</button>
                 <a class="mt-4" href="/crearusuario" style="color:#ece6c2;text-decoration: none;">¿No tenes usuario? ¡Vamos a crearlo!</a>
                 <p class="mt-4 mb-3" style="color:#ece6c2;opacity:0.5;">¿Listx para la aventura?</p>
             </form>
         </main>
 
 
+            <!-- Modal -->
+            <div class="modal fade" id="alert" tabindex="-1" aria-labelledby="alert" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Error al iniciar sesión!</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="$('.modal').modal('hide')"></button>
+                        </div>
+                        <div class="modal-body" id="alertBody">{{msg}}</div>
+                    </div>
+                </div>
+            </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="../static/inicio_user/inicio_sesion.js"></script>
   </body>
 </html>
 

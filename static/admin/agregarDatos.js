@@ -15,7 +15,7 @@ function mostrarFormRespuestas(eleccion){
             <div class="row g-3">
                 <div class="col-11">
                     <label for="rta${i}" class="form-label mb-0">Respuesta</label>
-                    <input type="text" class="form-control mt-0 mb-2" id="rta${i}" placeholder="Ingrese la respuesta que quiere agregar" required>
+                    <input type="text" class="form-control mt-0 mb-2" id="rta${i}" name="rta${i}" placeholder="Ingrese la respuesta que quiere agregar" required>
                 </div>
                 <div class="col-1 ">
                     <label for="correcto${i}" class="form-label mb-0">Correcta?</label> <br>
@@ -79,7 +79,7 @@ function validacionManual(){
         La opción de <i>Categoría</i> y <i>Nivel</i> seleccionadas no son compatibles entre sí. Tenga en cuenta lo siguiente:<br><br>
         <ul>
         <li> Nivel 1 --> Categoría Agenda 2030 </li>
-        <li> Nivel 2 --> Categoría ODS 4, ODS 10, ODS 15 </li>
+        <li> Nivel 2 --> Categoría ODfS 4, ODS 10, ODS 15 </li>
         <li> Nivel 3 --> Categoría Estadísticas </li>
         </ul>`
         alert.show()

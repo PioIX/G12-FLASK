@@ -29,8 +29,8 @@ body{
   padding-top: 40px;
   padding-bottom: 40px;
   background-color: #599815;
-  background: url('../static/imagenes/fondos/Arboles.png') center bottom repeat-x,
-              url('../static/imagenes/fondos/Cielo.png') center bottom repeat-x,
+  background: url('../imagenes/fondos/Arboles.png') center bottom repeat-x,
+              url('../imagenes/fondos/Cielo.png') center bottom repeat-x,
               #99DDB6;
   background-size: auto 50%, auto 90%;
 }

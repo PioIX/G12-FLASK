@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="../static/admin/estilos_admin_editar.css">
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-    
+      <title>Editar Preguntas</title>
       <script>
             let preguntas = {{ preguntas|tojson }};
             let respuestas = {{ respuestas|tojson }};
@@ -42,7 +42,7 @@
                 <p class="fs-6 p-0 m-0 text-light">Elegir la pregunta a editar mediante el menu. Una vez seleccionada, se mostraran en pantalla los datos. Presionar el boton <i>Editar</i> para modificar cada campo. La respuesta correcta se marcará en verde; este campo es <b>inamovible</b>, la respuesta que escriba en ese campo figurará como correcta [tener esto en cuenta al momento de ingresar cualquier modificacion]</p>
             </div>
 
-            <form class="col-12 mb-3 p-3 bg-white rounded shadow-sm" >
+            <form method="post" action="/editar" class="col-12 mb-3 p-3 bg-white rounded shadow-sm">
                 <label for="opciones" class="form-label mb-0">Preguntas cargadas</label>
                 <select class="form-select form-select mt-0 mb-2" name="opciones" id="opciones" onchange="mostrarRespuestas(this.value,'respuestasEditar')">
                     <option selected disabled>Seleccione una pregunta</option>
@@ -97,7 +97,7 @@
                 <p class="fs-6 p-0 m-0 text-light">Elegir la pregunta a eliminar mediante el menu. Una vez seleccionada, se mostraran en pantalla los datos. Presionar el boton <i>Enviar Modificaciones</i> una vez que este seguro para borrar la pregunta y sus respuestas.</p>
             </div>
 
-            <form class="col-12 mb-3 p-3 bg-white rounded shadow-sm" >
+            <form method="post" action="/borrar" class="col-12 mb-3 p-3 bg-white rounded shadow-sm">
                 <label for="opciones" class="form-label mb-0">Preguntas cargadas</label>
                 <select class="form-select form-select mt-0 mb-2" name="opciones" id="opciones" onchange="mostrarRespuestas(this.value,'respuestasBorrar')">
                     <option selected disabled>Seleccione una pregunta</option>

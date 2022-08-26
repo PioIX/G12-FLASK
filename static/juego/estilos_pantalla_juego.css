@@ -1,0 +1,307 @@
+/* ---------- MODIFICA SCROLL BAR ----------------*/
+
+::-webkit-scrollbar {
+    width: 12px;              
+}
+::-webkit-scrollbar-track {
+    background: rgba(236, 230, 194,0);      
+}
+::-webkit-scrollbar-thumb {
+    background-color: #8DBC25;    
+    border-radius: 20px; 
+    border: 3px solid #EDEDE0;  
+}
+body{
+    overflow: auto;
+
+}
+/*------------------------------------------------*/
+
+
+/* ----------------------- CAJAS BASE ------------------------------*/
+
+body,html{
+    background-color:#ece6c2;
+    margin: 0 !important;
+}
+
+#container-principal{
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+#base{
+    min-height: 640px !important; 
+    margin: auto;
+    overflow: auto;
+    height: 100%; 
+    display:flex;
+}
+
+#container{
+    width: auto;
+    height: 90%;
+    aspect-ratio: 16/9;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#main{
+    width: 80%;
+    height: 100%;
+    background: url(../../static/imagenes/fondos/Pasto.png) center bottom repeat-x,
+                url(../../static/imagenes/fondos/Arboles.png) center 90% repeat-x,
+                url(../../static/imagenes/fondos/Cielo.png) center top repeat-x;
+    background-size: 40%, 80%, 55%;
+    float:left;
+    position: relative;
+}
+
+#mapa{
+    width: 20%;
+    height: auto;
+    background-color: #23352A;
+    float: right;
+    position: relative;
+    background: url(../../static/imagenes/fondos/mapa.png) center bottom no-repeat;
+    background-size:cover;
+    border-left: #ece6c2 7px solid;
+}
+
+#container-info{
+    width: 80%;
+    height: 85%;
+    top: 4%; right: 3.2%;
+    background-color:#edede0;
+    float:right;
+    z-index: 1;
+    position: absolute;
+    overflow: overlay;
+}
+
+#info{
+    display: block;
+    height: 90%;
+    width: 100%;
+    right: 0;
+    top: 0;
+    overflow: auto;
+    z-index: 1;
+    position: absolute;
+    background-color:#edede0;
+    float:right;
+}
+
+#botonera{
+    background-color:#edede0;
+    z-index: 2;
+    height:10%;
+}
+
+.botones-menu{
+    height: 70%;
+    margin-top: 15%;
+}
+
+#globo-dialogo1{
+    background: url(../../static/imagenes/fondos/dialogo.png) center bottom no-repeat;
+}
+
+.rana{
+    font-family: 'Itim', cursive;
+}
+
+/* ---------------------------------------------------------------------------------------------- */
+
+/* ---------------------------------- ELEMENTOS BASE -------------------------------------------- */
+
+#avatar_usuario{
+    width: 15%;
+    height: auto;
+    bottom: 2.5%; right: 2%;
+    z-index: 3;
+    object-fit: cover;
+    position: absolute;    
+}
+
+#avatar_maestro{
+    width: 21%;
+    height: auto;
+    z-index: 4;
+    position: absolute;
+    bottom: 7%; left:1.5%;
+}
+
+#puntaje{
+    height: 7%;
+    background-color: #9CAC2D;
+    bottom: 2.5%; right: 18%;
+    z-index: 3;
+    object-fit: cover;
+    position: absolute;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+#teoria[data-nivel="ods4"]{
+    background-image: url(../imagenes/caratulas/ods4.jpg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 7px;
+}
+#teoria[data-nivel="ods10"]{
+    background-image: url(../imagenes/caratulas/ods10.jpg);
+    background-size: cover;
+    background-position: center;
+    border-radius: 7px;
+}
+#teoria[data-nivel="ods15"]{
+    background-image: url(../imagenes/caratulas/ods15.jpg) center;
+    background-size: cover;
+    border-radius: 7px;
+}
+
+/* ----------------------------------------------------------------------------------------------- */
+
+/* ------------------------------------------ CUESTIONARIO --------------------------------------- */
+#pregunta{
+    background-color: #2C7342;
+    width: 100%;
+    color:#ece6c2;
+}
+
+.rta{
+    background-color: hsla(90, 71%, 35%, 0.5);
+    color:#261616;
+    margin: 2.5% 0px;
+}
+
+.form-check-input:checked{
+    background-color:#23352A !important;
+}
+
+#enviar{
+    background-color: #23352A;
+    color: #ece6c2;
+}
+/* ----------------------------------------------------------------------------------------------- */
+
+
+#final{
+    background: 
+                url(../../static/imagenes/fondos/Arboles.png) center bottom repeat-x,
+                url(../../static/imagenes/fondos/Cielo.png) center top repeat-x;
+    background-size: 70%, 50%;
+    width: auto;
+    height: 90%;
+    aspect-ratio: 16/9;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+}
+
+#final_base{
+    height: 100%;
+    position: relative;
+    width: 100%;
+    justify-content: center;
+}
+
+#texto{
+    width: 70%;
+    height: 20%;
+    background: url('../imagenes/fondos/marco_titulo.png') center no-repeat;
+    background-size: contain;
+    color: #ffffff;
+    position: relative;
+    left: 15%;
+}
+
+#ranking{
+    width: 80%;
+    height: 59%;
+    left: 10%;
+    top: 5%;
+    position: relative;
+    background-image: url('../imagenes/fondos/marco.png');
+    background-size: 100% auto;
+    background-repeat: no-repeat
+}
+
+#usuario_final{
+    width: 30vh;
+    height: auto;
+    bottom: 0;
+    z-index: 3;
+    object-fit: cover;
+    position: absolute;
+    left: 80%;
+}
+
+#linea_botones{
+    width: 69%;
+    position: absolute;
+    height: 10%;
+    top: 89%;
+    right: 21%;
+}
+
+.divPuntaje{
+    background-color: #6C3D28;
+    color:#ece6c2;
+}
+
+#linea_botones > .btn{
+    background-color: #23352A;
+    border: none;
+    font-size: 3vh;
+}
+
+.inputPuntos{
+    background: none;
+    border: none;
+    color:#ece6c2 ;
+    text-align: center;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    pointer-events:none;
+}
+
+.terminado{
+    position:absolute;
+    height:7%;
+}
+
+#marcador1{
+    top: 7%;
+    left: 41%;
+}
+#marcador2{
+    top:32%;
+    left:22%;
+}
+#marcador3{
+    top:52.5%;
+    left:76%;
+}
+#marcador4{
+    top:69.5%;
+    left: 8%;
+}
+#marcador5{
+    top:89%;
+    left:56%;
+}
